@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment
+  namespace: sns
+  labels:
+    app: payment
+spec:
+  selector:
+    matchLabels:
+      app: payment
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: payment
+    spec:
+      containers:
+      - name: payment
+        image: sns-payment:latest
+        ports:
+        - containerPort: 3000
+        env:
+          - name: NODE_ENV
+            value: "production"
+          - name: CONFIG_DIR
+            value: "/opt/sns/app/config"
+        imagePullPolicy: "Never"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment
+  namespace: sns
+  labels:
+    app: payment
+spec:
+  ports:
+  - port: 3000
+    targetPort: 3000
+  selector:
+    app: payment

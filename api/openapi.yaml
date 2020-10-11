@@ -1,0 +1,226 @@
+openapi: 3.0.1
+info:
+  title: SecurityNewSource
+  description: 'API for SecurityNewsSource'
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+tags:
+- name: payment
+  description: Payment Service for SecurityNewsSource
+- name: subscription
+  description: Subscription Service for SecurityNewsSource
+paths:
+  # Payment Resources
+  /payment-methods:
+    get:
+      tags:
+      - payment
+      summary: Get the current payment method
+      responses:
+        200:
+          description: OK - Successful Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentMethodResponse'
+    post:
+      tags:
+      - payment
+      summary: Add or update the current payment method
+      requestBody:
+        description: Payment method to be added or updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentMethodRequest'
+        required: true
+      responses:
+        200:
+          description: OK - Successful Request
+        400:
+          description: Bad Request
+          content: {}
+    delete:
+      tags:
+      - payment
+      summary: Removed the current payment method
+      responses:
+        204:
+          description: No Content
+          content: {}
+
+  /payment-methods/process:
+    post:
+      tags:
+      - payment
+      summary: Process a payment or refund using the currently active payment method
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProcessPaymentRequest'
+        required: true
+      responses:
+        200:
+          description: OK - Successful Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessPaymentResponse'
+        400:
+          description: Bad Request
+          content: {}
+
+  # Subscription Resources
+  /subscriptions:
+    get:
+      tags:
+      - subscription
+      summary: Get the current subscription
+      responses:
+        200:
+          description: OK - Successful Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionResponse'
+    post:
+      tags:
+      - subscription
+      summary: Add or update the current subscription
+      description: This API will need to charge or refund the current payment method if the duration of the subscription has changed.
+      requestBody:
+        description: Subscription to be added or updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionRequest'
+        required: true
+      responses:
+        200:
+          description: OK - Successful Request
+        400:
+          description: Bad Request
+          content: {}
+    delete:
+      tags:
+      - subscription
+      summary: Cancel the current subscription
+      description: This API will need to refund the current payment method if the subscription is active and not expired.
+      responses:
+        200:
+          description: No Content
+          content: {}
+
+components:
+  schemas:
+    # Payment Method Representations
+    PaymentMethodRequest:
+      description: A request to add a Payment Method
+      required:
+      - name
+      - addressLine1
+      - city
+      - state
+      - zip
+      - cardNumber
+      - cardExp
+      - cardCvv
+      type: object
+      properties:
+        name:
+          type: string # integer
+        addressLine1:
+          type: string
+        addressLine2:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip:
+          type: string
+        cardNumber:
+          type: string
+        cardExp:
+          type: string
+        cardCvv:
+          type: string
+
+    PaymentMethodResponse:
+      description: A response from adding or getting a Payment Method
+      required:
+      - name
+      - cardNumberLast4
+      - expiration
+      type: object
+      properties:
+        name:
+          type: string
+        cardNumberLast4:
+          type: string
+        expiration:
+          type: string
+
+    ProcessPaymentRequest:
+      description: A request to add a process a payment
+      required:
+      - type
+      - amount
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - payment
+            - refund
+        amount:
+          description: This wil always be a positive number, even for a refund.
+          type: number
+
+    ProcessPaymentResponse:
+      description: A response from processing a paument
+      required:
+      - status
+      type: object
+      properties:
+        status:
+          type: string
+
+    # Subscription Representations
+    SubscriptionRequest:
+      description: A request to add or update a subscription
+      required:
+      - product
+      - monthsPurchased
+      type: object
+      properties:
+        product:
+          type: string
+        monthsPurchased:
+          description: This is the number of months between 1 and 12
+          type: integer
+
+    SubscriptionResponse:
+      description: A response from adding or updating a subscription
+      required:
+      - product
+      - monthsPurchased
+      - status
+      type: object
+      properties:
+        product:
+          type: string
+        monthsPurchased:
+          description: This is the number of months between 1 and 12
+          type: integer
+        status:
+          type: string
+        datePurchased:
+          type: string
+        dateExpires:
+          type: string
+
+
