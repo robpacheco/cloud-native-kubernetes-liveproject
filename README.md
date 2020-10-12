@@ -23,7 +23,7 @@ in the `k8s` directory.
 
 ## Miletone 2 - Starting Point
 
-For those learners who may be unfamiliar with Javascript and Node.js, there is a provided starting point that will provide the bae service implementation along with comments for where implementation from the learner should be added. This is an optional starting point.
+For those learners who may be unfamiliar with Javascript and Node.js, there is a provided starting point that will provide the base service implementation along with comments for where implementation from the learner should be added. This is an optional starting point.
 
 This starting point can be found on the branch `milestone2/base`: https://github.com/robpacheco/cloud-native-kubernetes-liveproject/tree/milestone2/base
 
