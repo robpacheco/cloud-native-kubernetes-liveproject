@@ -6,7 +6,7 @@ Welcome to the "Creating and Managing Cloud Native Services in Kubernetes" liveP
 
 This liveProject is broken up into five milestones, each with a corresponding branch in this repository. The master branch is the starting point for the liveProject.
 
-As you're getting started on the first milestone, it may help to take a look at the [Kubernetes Notes](KUBERNETES.md) to get starting setting up a cluster and deploying
+As you're getting started on the first milestone, it may help to take a look at the [Kubernetes Notes](notes/KUBERNETES.md) to get starting setting up a cluster and deploying
 the initial version of the application.
 
 ## Project Layout
