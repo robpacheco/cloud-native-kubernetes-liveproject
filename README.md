@@ -11,7 +11,7 @@ the initial version of the application.
 
 ## Project Layout
 
-* api - API Documention for the SecurityNewsSource services using Swagger.
+* api - API Documentation for the SecurityNewsSource services using Swagger.
 * k8s - Kubernetes YAML files and other related Kubernetes resources for the SecurityNewsSource services and deployment.
 * payments - The source for the `payment` service. This includes the Dockerfile and related files.
 
@@ -21,7 +21,7 @@ in the `k8s` directory.
 
 # Additional Notes 
 
-## Miletone 2 - Starting Point
+## Milestone 2 - Starting Point
 
 For those learners who may be unfamiliar with Javascript and Node.js, there is a provided starting point that will provide the base service implementation along with comments for where implementation from the learner should be added. This is an optional starting point.
 
