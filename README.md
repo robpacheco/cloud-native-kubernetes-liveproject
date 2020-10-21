@@ -19,6 +19,10 @@ Directories for additional services should be added to this top-level directory.
 be added to the `k8s/manifests` directory. Additional Kubernetes files that are not YAML manifests can be added anywhere
 in the `k8s` directory.
 
+## Starting Point Diagram
+
+![Starting Point](diagrams/Milestone1-Start.png)
+
 # Additional Notes 
 
 ## Milestone 2 - Starting Point
