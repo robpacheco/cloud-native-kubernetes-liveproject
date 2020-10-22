@@ -31,11 +31,4 @@ For those learners who may be unfamiliar with Javascript and Node.js, there is a
 
 This starting point can be found on the branch `milestone2/base`: https://github.com/robpacheco/cloud-native-kubernetes-liveproject/tree/milestone2/base
 
-## Milestone Solutions
-
-* Solution for Milestone 1 - branch `milestone1/solution` - https://github.com/robpacheco/cloud-native-kubernetes-liveproject/tree/milestone1/solution
-* Solution for Milestone 2 - branch `milestone2/solution` - https://github.com/robpacheco/cloud-native-kubernetes-liveproject/tree/milestone2/solution
-* Solution for Milestone 3 - branch `milestone3/solution` - https://github.com/robpacheco/cloud-native-kubernetes-liveproject/tree/milestone3/solution
-* Solution for Milestone 4 - branch `milestone4/solution` - https://github.com/robpacheco/cloud-native-kubernetes-liveproject/tree/milestone4/solution
-* Solution for Milestone 5 - branch `milestone5/solution` - https://github.com/robpacheco/cloud-native-kubernetes-liveproject/tree/milestone5/solution
 
