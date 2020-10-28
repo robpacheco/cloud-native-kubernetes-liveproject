@@ -34,6 +34,10 @@ eval $(minikube -p sns docker-env)
 docker build -t sns-payment:latest .
 ```
 
+```
+docker build -t sns-subscription:latest .
+```
+
 ## Using kubectl to Deploy
 
 ```

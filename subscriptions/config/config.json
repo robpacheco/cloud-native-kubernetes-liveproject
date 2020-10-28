@@ -1,0 +1,7 @@
+{
+    "server_port": 3001,
+    "redis_host": "localhost",
+    "redis_port": 6379,
+    "paymentUrlBase": "http://localhost:3000",
+    "amountPerMonth": 25.00
+}

@@ -14,6 +14,7 @@ the initial version of the application.
 * api - API Documentation for the SecurityNewsSource services using Swagger.
 * k8s - Kubernetes YAML files and other related Kubernetes resources for the SecurityNewsSource services and deployment.
 * payments - The source for the `payment` service. This includes the Dockerfile and related files.
+* subscriptions - This is where the source for the `subscription` service will be. This includes the Dockerfile and related files.
 
 Directories for additional services should be added to this top-level directory. Additional Kubernetes YAML files should
 be added to the `k8s/manifests` directory. Additional Kubernetes files that are not YAML manifests can be added anywhere
