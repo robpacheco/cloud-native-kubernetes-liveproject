@@ -15,6 +15,7 @@ COPY docker-entrypoint.sh /opt/sns/app/
 WORKDIR /opt/sns/app
 
 RUN chmod 700 docker-entrypoint.sh && \
+    dos2unix docker-entrypoint.sh && \
     npm install
 
 EXPOSE 3000
