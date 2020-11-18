@@ -1,0 +1,831 @@
+{
+	"info": {
+		"_postman_id": "99189819-b779-4879-925d-1897c95cacce",
+		"name": "SecurityNewsSource",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Payment",
+			"item": [
+				{
+					"name": "Get Payment (before exists)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8d986f31-4730-4209-beeb-2fdbbbf73cbf",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code should be 404 (not found)\", function () {",
+									"    pm.expect(pm.response.code).to.be.eql(404);",
+									"});",
+									"",
+									"pm.test(\"has appropriate error\", function () {",
+									"    pm.expect(jsonData.error).to.be.eql(\"payment method not found\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{PAYMENT_URL}}/api/payment-methods",
+							"host": [
+								"{{PAYMENT_URL}}"
+							],
+							"path": [
+								"api",
+								"payment-methods"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Payment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "43b00e1c-6bc5-4b92-af20-e30d400cdcb0",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code should be 200 (ok)\", function () {",
+									"    pm.expect(pm.response.code).to.be.eql(200);",
+									"});",
+									"",
+									"pm.test(\"response fields match\", function () {",
+									"    pm.expect(jsonData.name).to.be.eql(\"John Smith 2\");",
+									"    pm.expect(jsonData.cardNumberLast4).to.be.eql(\"1111\");",
+									"    pm.expect(jsonData.expiration).to.be.eql(\"12/30\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"John Smith 2\",\n    \"addressLine1\":\"55 Some Ln\",\n    \"addressLine2\":\"\",\n    \"city\":\"Some Towm\",\n    \"state\":\"MA\",\n    \"zip\":\"12345\",\n\t\"cardNumber\":\"4111-1111-1111-1111\",\n\t\"cardExp\":\"12/30\",\n\t\"cardCvv\":\"123\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{PAYMENT_URL}}/api/payment-methods",
+							"host": [
+								"{{PAYMENT_URL}}"
+							],
+							"path": [
+								"api",
+								"payment-methods"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Payment (after created)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6fba76e5-5913-4c17-908e-6ef7aae9f553",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code should be 200 (ok)\", function () {",
+									"    pm.expect(pm.response.code).to.be.eql(200);",
+									"});",
+									"",
+									"pm.test(\"response fields match\", function () {",
+									"    pm.expect(jsonData.name).to.be.eql(\"John Smith 2\");",
+									"    pm.expect(jsonData.cardNumberLast4).to.be.eql(\"1111\");",
+									"    pm.expect(jsonData.expiration).to.be.eql(\"12/30\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{PAYMENT_URL}}/api/payment-methods",
+							"host": [
+								"{{PAYMENT_URL}}"
+							],
+							"path": [
+								"api",
+								"payment-methods"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Process Payment - Successful Payment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "631217a5-c0bf-4967-bccb-570fe3176ea0",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code should be 200 (ok)\", function () {",
+									"    pm.expect(pm.response.code).to.be.eql(200);",
+									"});",
+									"",
+									"pm.test(\"got approriate status\", function () {",
+									"    pm.expect(jsonData.status).to.be.eql(\"successful\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"amount\": 25.00,\n    \"type\":\"payment\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{PAYMENT_URL}}/api/payment-methods/process",
+							"host": [
+								"{{PAYMENT_URL}}"
+							],
+							"path": [
+								"api",
+								"payment-methods",
+								"process"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Process Payment - Successful Refund",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2323172a-a19d-4862-a0e9-0f4534fe3b2c",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code should be 200 (ok)\", function () {",
+									"    pm.expect(pm.response.code).to.be.eql(200);",
+									"});",
+									"",
+									"pm.test(\"got approriate status\", function () {",
+									"    pm.expect(jsonData.status).to.be.eql(\"successful\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"amount\": 25.00,\n    \"type\":\"refund\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{PAYMENT_URL}}/api/payment-methods/process",
+							"host": [
+								"{{PAYMENT_URL}}"
+							],
+							"path": [
+								"api",
+								"payment-methods",
+								"process"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Process Payment - No Type",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9fd78621-87dc-4cc6-82c6-4d8f62ad81a1",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code should be 400 (bad request)\", function () {",
+									"    pm.expect(pm.response.code).to.be.eql(400);",
+									"});",
+									"",
+									"pm.test(\"got 'type' error\", function () {",
+									"    pm.expect(jsonData.type.length).to.be.eql(1);",
+									"    pm.expect(jsonData.amount.length).to.be.eql(0);",
+									"",
+									"    if(jsonData.type.length > 0) {",
+									"        pm.expect(jsonData.type[0]).to.be.eql(\"undefined is not a string\");",
+									"    }",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"amount\": 25.00\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{PAYMENT_URL}}/api/payment-methods/process",
+							"host": [
+								"{{PAYMENT_URL}}"
+							],
+							"path": [
+								"api",
+								"payment-methods",
+								"process"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Process Payment - Invalid Type",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "40a1eed7-49d3-44e4-a1f3-f60f002fa5d1",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code should be 400 (bad request)\", function () {",
+									"    pm.expect(pm.response.code).to.be.eql(400);",
+									"});",
+									"",
+									"pm.test(\"got 'type' error\", function () {",
+									"    pm.expect(jsonData.type.length).to.be.eql(1);",
+									"    pm.expect(jsonData.amount.length).to.be.eql(0);",
+									"",
+									"    if(jsonData.type.length > 0) {",
+									"        pm.expect(jsonData.type[0]).to.be.eql(\"Process type must either be 'refund' or 'payment'. Got credit\");",
+									"    }",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"amount\": 25.00,\n    \"type\":\"credit\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{PAYMENT_URL}}/api/payment-methods/process",
+							"host": [
+								"{{PAYMENT_URL}}"
+							],
+							"path": [
+								"api",
+								"payment-methods",
+								"process"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Process Payment - No amount",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f6da1383-9de5-42d6-b6c7-b1bb7283415e",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code should be 400 (bad request)\", function () {",
+									"    pm.expect(pm.response.code).to.be.eql(400);",
+									"});",
+									"",
+									"pm.test(\"got 'type' error\", function () {",
+									"    pm.expect(jsonData.type.length).to.be.eql(0);",
+									"    pm.expect(jsonData.amount.length).to.be.eql(1);",
+									"",
+									"    if(jsonData.amount.length > 0) {",
+									"        pm.expect(jsonData.amount[0]).to.be.eql(\"amount is null or undefined\");",
+									"    }",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\":\"refund\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{PAYMENT_URL}}/api/payment-methods/process",
+							"host": [
+								"{{PAYMENT_URL}}"
+							],
+							"path": [
+								"api",
+								"payment-methods",
+								"process"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Process Payment - Amount is not a number",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7c83edca-7fd1-4882-8f84-21b2b22df6dd",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code should be 400 (bad request)\", function () {",
+									"    pm.expect(pm.response.code).to.be.eql(400);",
+									"});",
+									"",
+									"pm.test(\"got 'type' error\", function () {",
+									"    pm.expect(jsonData.type.length).to.be.eql(0);",
+									"    pm.expect(jsonData.amount.length).to.be.eql(1);",
+									"",
+									"    if(jsonData.amount.length > 0) {",
+									"        pm.expect(jsonData.amount[0]).to.be.eql(\"25.00 is not a number\");",
+									"    }",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"amount\": \"25.00\",\n    \"type\":\"refund\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{PAYMENT_URL}}/api/payment-methods/process",
+							"host": [
+								"{{PAYMENT_URL}}"
+							],
+							"path": [
+								"api",
+								"payment-methods",
+								"process"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Process Payment - Amount is negative",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "57a495cc-29e4-4903-924f-9d620fe406d4",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code should be 400 (bad request)\", function () {",
+									"    pm.expect(pm.response.code).to.be.eql(400);",
+									"});",
+									"",
+									"pm.test(\"got 'type' error\", function () {",
+									"    pm.expect(jsonData.type.length).to.be.eql(0);",
+									"    pm.expect(jsonData.amount.length).to.be.eql(1);",
+									"",
+									"    if(jsonData.amount.length > 0) {",
+									"        pm.expect(jsonData.amount[0]).to.be.eql(\"-25 must be a positive amount over 0\");",
+									"    }",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"amount\": -25.00,\n    \"type\":\"refund\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{PAYMENT_URL}}/api/payment-methods/process",
+							"host": [
+								"{{PAYMENT_URL}}"
+							],
+							"path": [
+								"api",
+								"payment-methods",
+								"process"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Payment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b6801e11-f31c-4b9b-ad3f-60b61223073f",
+								"exec": [
+									"pm.test(\"Status code should be 204 (no content)\", function () {",
+									"    pm.expect(pm.response.code).to.be.eql(204);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{PAYMENT_URL}}/api/payment-methods",
+							"host": [
+								"{{PAYMENT_URL}}"
+							],
+							"path": [
+								"api",
+								"payment-methods"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Payment (after deleted)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "01e65e40-4cb9-4eab-8d31-742a972dd82b",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code should be 404 (not found)\", function () {",
+									"    pm.expect(pm.response.code).to.be.eql(404);",
+									"});",
+									"",
+									"pm.test(\"has appropriate error\", function () {",
+									"    pm.expect(jsonData.error).to.be.eql(\"payment method not found\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{PAYMENT_URL}}/api/payment-methods",
+							"host": [
+								"{{PAYMENT_URL}}"
+							],
+							"path": [
+								"api",
+								"payment-methods"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Subscription",
+			"item": [
+				{
+					"name": "Get Subscription (before subscription exists)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "87d9a641-15cd-4405-ab79-6c51e3235d98",
+								"exec": [
+									"pm.test(\"Status code should be 404 (not found)\", function () {",
+									"    pm.expect(pm.response.code).to.be.eql(404);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SUBSCRIPTION_URL}}/api/subscriptions",
+							"host": [
+								"{{SUBSCRIPTION_URL}}"
+							],
+							"path": [
+								"api",
+								"subscriptions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Subscription",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d2622fc2-7388-4b99-b00e-3bdefe3ca9a6",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code should be 200 (ok)\", function () {",
+									"    pm.expect(pm.response.code).to.be.eql(200);",
+									"});",
+									"",
+									"pm.test(\"response fields match\", function () {",
+									"    pm.expect(jsonData.product).to.be.eql(\"produt a\");",
+									"    pm.expect(jsonData.monthsPurchased).to.be.eql(\"5\");",
+									"    pm.expect(jsonData.status).to.be.eql(\"active\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"product\": \"produt a\",\n    \"monthsPurchased\":\"5\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{SUBSCRIPTION_URL}}/api/subscriptions",
+							"host": [
+								"{{SUBSCRIPTION_URL}}"
+							],
+							"path": [
+								"api",
+								"subscriptions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Subscription (after subscription exists) Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "71504155-50ff-4129-bc0c-52637c1c7a53",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code should be 200 (ok)\", function () {",
+									"    pm.expect(pm.response.code).to.be.eql(200);",
+									"});",
+									"",
+									"pm.test(\"response fields match\", function () {",
+									"    pm.expect(jsonData.product).to.be.eql(\"produt a\");",
+									"    pm.expect(jsonData.monthsPurchased).to.be.eql(\"5\");",
+									"    pm.expect(jsonData.status).to.be.eql(\"active\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SUBSCRIPTION_URL}}/api/subscriptions",
+							"host": [
+								"{{SUBSCRIPTION_URL}}"
+							],
+							"path": [
+								"api",
+								"subscriptions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Subscription",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "aa7d4176-99d8-41f4-8f09-6b73b52dc401",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code should be 200 (ok)\", function () {",
+									"    pm.expect(pm.response.code).to.be.eql(200);",
+									"});",
+									"",
+									"pm.test(\"response fields match\", function () {",
+									"    pm.expect(jsonData.product).to.be.eql(\"produt a\");",
+									"    pm.expect(jsonData.monthsPurchased).to.be.eql(\"5\");",
+									"    pm.expect(jsonData.status).to.be.eql(\"cancelled\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{SUBSCRIPTION_URL}}/api/subscriptions",
+							"host": [
+								"{{SUBSCRIPTION_URL}}"
+							],
+							"path": [
+								"api",
+								"subscriptions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Subscription (after subscription exists) Copy 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9bd3c34d-0e35-40d9-a147-9b041a465b34",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code should be 200 (ok)\", function () {",
+									"    pm.expect(pm.response.code).to.be.eql(200);",
+									"});",
+									"",
+									"pm.test(\"response fields match\", function () {",
+									"    pm.expect(jsonData.product).to.be.eql(\"produt a\");",
+									"    pm.expect(jsonData.monthsPurchased).to.be.eql(\"5\");",
+									"    pm.expect(jsonData.status).to.be.eql(\"cancelled\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SUBSCRIPTION_URL}}/api/subscriptions",
+							"host": [
+								"{{SUBSCRIPTION_URL}}"
+							],
+							"path": [
+								"api",
+								"subscriptions"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

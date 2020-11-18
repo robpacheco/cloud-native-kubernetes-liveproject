@@ -12,6 +12,7 @@ the initial version of the application.
 ## Project Layout
 
 * api - API Documentation for the SecurityNewsSource services using Swagger.
+* api/postman - Postman tests for APIs.
 * k8s - Kubernetes YAML files and other related Kubernetes resources for the SecurityNewsSource services and deployment.
 * payments - The source for the `payment` service. This includes the Dockerfile and related files.
 * subscriptions - This is where the source for the `subscription` service will be. This includes the Dockerfile and related files.
