@@ -1,10 +1,10 @@
 # Creating and Managing Cloud Native Services in Kubernetes
 
-Welcome to the "Creating and Managing Cloud Native Services in Kubernetes" liveProject. This full content for this liveProject can be found here: <fill in URL here>
+Welcome to the "Creating and Managing Cloud Native Services in Kubernetes" liveProject. This full content for this liveProject can be found here: [Creating and Managing Cloud Native Services in Kubernetes](https://www.manning.com/liveproject/creating-and-managing-cloud-native-services-in-kubernetes)
 
 ## Starting Point
 
-This liveProject is broken up into five milestones, each with a corresponding branch in this repository. The master branch is the starting point for the liveProject.
+The master branch is the starting point for the liveProject.
 
 ## Project Layout
 
