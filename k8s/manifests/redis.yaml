@@ -1,3 +1,12 @@
+apiVersion: v1
+data:
+  password: cGFzc3dvcmQ=
+kind: Secret
+metadata:
+  namespace: sns
+  creationTimestamp: null
+  name: redis
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -20,6 +29,21 @@ spec:
         image: redis:6.0.4-alpine
         ports:
         - containerPort: 6379
+        resources:
+          requests:
+            cpu: 200m
+            memory: 10Mi
+          limits:
+            cpu: 500m
+            memory: 20Mi
+        env:
+          - name: REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: redis
+                key: password
+              
+              
 ---
 apiVersion: v1
 kind: Service

@@ -153,6 +153,14 @@ module.exports = (repositories, logger) => {
     var express = require('express')
     var router = express.Router()
 
+    router.get('/ready', function(req, res) {
+        res.status(200).send('Ok');
+    });
+
+    router.get('/health', function(req, res) {
+        res.status(200).send('Ok');
+    });
+
     router.get('/', function (req, res) {
         controller.handleGetPaymentMethod(req, res)
     })
